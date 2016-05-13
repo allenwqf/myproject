@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection"content="telephone=no, email=no" />
+    <title>抽奖记录</title>
+    <meta name="keywords" content="交广领航,河南交通广播" />
+    <meta name="description" content="河南交通广播App" />
+    <link rel="apple-touch-icon-precomposed" href="css/img/logo.png" />
+    <link rel="shortcut icon" type="image/icon" href="css/img/favicon.ico" />
+    <!--<link rel="stylesheet" href="css/sexyCode.css" />-->
+    <link rel="stylesheet" href="css/record.css" />
+</head>
+<body>
+    <div class="container">
+        <ul id="prizeList" class="prizeList"></ul>
+        <div class="intro">
+            <div id="intro" class="detail">
+                <h3>
+                    <span>活动规则</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/html" id="template/prizeList">
+        {{if list.length >= 1}}
+        {{each list as item}}
+            <li>
+                <div class="prizeimg">
+                	{{if item.prizeimage}}
+                    <img src={{item.prizeimage}} />
+                    {{/if}}
+                    {{if item.prizeimage == null}}
+                    <img src='images/p_1.jpg' />
+                    {{/if}}
+                </div>
+                <div class="tipinfo">恭喜你抽中了<br /><span>{{item.t | dateFormat:'yyyy年 MM月 dd日 hh:mm:ss'}}</span></div>
+                <p>{{item.prizename}}&nbsp;{{item.prizeinfo}}</p>
+            </li>
+        {{/each}}
+        {{/if}}
+    </script>
+    
+    <script type="text/html" id="template/prizeListnull">
+        <div class="nullrecord"><h3>暂无中奖纪录</h3></div>          
+    </script>
+    
+<script src="js/jquery.min.js"></script>
+<script src="js/template.js"></script>
+    <script>
+        var App = {
+            getParams : function(){
+                var params = {};
+                var str = location.search;
+                if(str === "") return;
+
+                str = str.substring(1);
+                var items = str.split('&');
+                $.each(items,function(){
+
+                    var item = this.split('=');
+                    var name = decodeURIComponent(item[0]);
+                    var value = decodeURIComponent(item[1]);
+                    if(name.length) params[name] = value;
+                });
+                return params;
+            },
+
+            templateHelp : function(){
+                template.helper('dateFormat', function(date, format){
+                	
+                	date = new Date(date);
+				    var map = {
+				        "M": date.getMonth() + 1, //月份 
+				        "d": date.getDate(), //日 
+				        "h": date.getHours(), //小时 
+				        "m": date.getMinutes(), //分 
+				        "s": date.getSeconds(), //秒 
+				        "q": Math.floor((date.getMonth() + 3) / 3), //季度 
+				        "S": date.getMilliseconds() //毫秒 
+				    };
+				    format = format.replace(/([yMdhmsqS])+/g, function(all, t){
+				        var v = map[t];
+				        if(v !== undefined){
+				            if(all.length > 1){
+				                v = '0' + v;
+				                v = v.substr(v.length-2);
+				            }
+				            return v;
+				        }
+				        else if(t === 'y'){
+				            return (date.getFullYear() + '').substr(4 - all.length);
+				        }
+				        return all;
+				    });
+				    return format;
+                });
+            },
+            renderPage : function(data){
+                var list = $('#prizeList'),
+                    intro = $('#intro'),
+                    html = template('template/prizeList', {list: data.recordList});
+	                intro.append(data.actioninfo);
+              		list.html(html);
+            },
+
+            getData : function(){
+                var params = App.getParams();
+                var dataURL="/Radio/act_lottery/winningrecordlist?";
+				var dataURL2="/Radio/act_lottery/signjudge?";
+                var newObj = {
+                      actionId : params.actionId,
+//					  actionId: 187,
+                      uid : params.uid,
+                };
+				 $.get(dataURL2, newObj, function(result, states, xhr) {
+                	if(result){
+                		var isFlag=result.iswinning;
+                        console.log('ssss--:',result.iswinning);
+                        if(!isFlag){
+                        	var aa=template('template/prizeListnull',xhr);
+                        	$('#prizeList').html(aa);
+                        }else{
+			                $.get(dataURL, newObj, function(result, states, xhr) {
+			                    if(result){
+			                        App.renderPage(result);
+			                    }
+			              		})
+			                .fail(function(){
+			                		console.log("请求失败");
+						    	});
+                        }
+                   }
+                });
+            },
+
+            init : function(){
+                this.templateHelp();
+                this.getData();
+            }
+        }; 
+        App.init();
+        
+//  jsonurl="record.json";
+//	$.getJSON(jsonurl,function(data){
+//		var msg = data.code || '查询失败';
+//		if(msg==200){
+//	        var list = $('#prizeList'),
+//	        intro = $('#intro'),
+//	        html = template('template/prizeList',{list: data.list});
+//	        intro.append(data.actioninfo);
+//	        list.html(html);
+//     }
+//  });
+       
+    </script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	    <meta name="renderer" content="webkit" />
+	    <meta http-equiv="Cache-Control" content="no-siteapp" />
+	    <meta http-equiv="pragma" content="no-cache" />
+	    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <meta name="format-detection"content="telephone=no, email=no" />
+		<title>砸金蛋</title>
+		<meta name="keywords" content="交广领航,河南交通广播" />
+		<meta name="description" content="河南交通广播App" />
+		<link rel="apple-touch-icon-precomposed" href="global/img/logo.png" />
+		<link rel="shortcut icon" type="image/icon" href="global/img/favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="css/amazeui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/liMarquee.css"/>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/amazeui.min.js" ></script>
+		<script src="js/template.js" ></script>
+		<script src="global/global.js" ></script>
+	</head>
+	<body>
+		<div>
+			 <img class="am-radius" src="images/toppp.png" width=100%  />
+			 <div class="hammer" datax="0">
+			 	<img src="images/img-6.png" class="am-img-responsive"/>			 	
+			 </div>
+			 <div id="egg1" class="egg">
+			 	<img src="images/egg_1.png"  class="am-img-responsive"/>
+			 </div>
+			<div id="egg2" class="egg">
+			 	<img src="images/egg_2.png"  class="am-img-responsive"/>
+			</div>
+			<div id="egg3" class="egg">
+			 	<img src="images/img-4.png"  class="am-img-responsive"/>
+			</div>
+			<div class="top-jilu"></div>
+			<div id="showMsg"></div>
+		</div>
+		
+	<div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+	  <div class="am-modal-dialog">
+	    <div class="am-modal-hd"></div>
+	    <div class="am-modal-bd"></div>
+	    <div class="am-modal-footer">
+	      <!--<span class="am-modal-btn" data-am-modal-cancel >取消</span>-->
+	      <span class="am-modal-btn" data-am-modal-confirm >确定</span>
+	    </div>
+	  </div>
+	</div>
+		
+		<script type="text/html" id="template/xinxi">
+
+			<div class="top-jihui">
+				<span>剩余砸蛋机会</span>
+				{{if (Surplusnumber == null) }}
+					<p>剩余刮奖机会<span id="surplus">0</span>次</p>
+				{{else}}
+					<p>剩余刮奖机会<span id="surplus">{{Surplusnumber}}</span>次</p>
+				{{/if}}
+			</div>
+			<div class="top-xinxi">
+				<div class="apple">
+					<ul>
+						{{if winningList != null}}
+					{{each winningList}}
+					<li>{{$value.name}}&nbsp;&nbsp;{{$value.phone}}&nbsp;&nbsp;{{$value.prizename}}</li>
+					{{/each}}
+					{{/if}}
+					{{if winningList == null}}
+					<li>暂无中奖纪录</li>
+					{{/if}}
+					</ul>
+				</div>
+			</div>
+			<div class="top-guize">{{#actioninfo}}</div>
+				 
+			<div class="am-modal am-modal-no-btn am-animation-scale-up" tabindex="-1" id="your-modal">
+				<div class="am-modal-dialog">
+					<div class="am-modal-hd am-modal-hd-person"><a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a></div>
+					<div class="am-modal-hd prize" id="testshow"><img id="prizeImg" src="images/p_0.jpg" /></div>
+					<div class="am-modal-bd prize"><a href="record.html"></a></div>
+				</div>
+			</div>
+		</script>
+
+<script type="text/javascript">
+	$(document).ready();
+
+	var App = {
+		initEvents:function() {
+			var tmpObj=wqf_template.GetUrlParms();
+			var isInApp=App.isInApp();
+			$(".egg").on('click',function(){
+				var num=$('.top-jihui').children('div').children('span').html();
+				var $hammer=$('.hammer');
+				if(!tmpObj.uid){
+					App.popmodal('请先登录');
+					App.nativeLogin();
+				}else if(!isInApp){
+					App.validateApp();
+				}else {
+					var issign=$hammer.data('issign');
+					var ishaslottery=$hammer.data('ishaslottery');
+					var todaysign=$hammer.data('todaysign');
+					var iswinning=$hammer.data('iswinning');
+					var winningflag=$hammer.data('winningflag');
+					
+					if(winningflag==true||iswinning==true||ishaslottery==false||todaysign==false||issign==false){
+						
+						if(iswinning==true){
+							App.popmodal('您已中奖，请查看纪录');
+						}
+						if(winningflag==true){
+							App.popmodal('您已中奖，请查看纪录');
+						}
+						if(ishaslottery==false){
+							App.popmodal('没有奖品了');
+						}
+						if(todaysign==false){
+							App.popmodal('今天已经不能参加活动');
+						}
+						if(issign==false){
+							App.popmodal('您没有资格参加活动');
+						}
+					}else{
+						App.eggClick();
+						
+					}
+				}
+			});
+			
+			$(".top-jilu").on('click',function(){
+		
+				if(!tmpObj.uid){
+					App.popmodal('请先登录');
+					App.nativeLogin();
+				}else if(!isInApp){
+					App.validateApp();
+				}else{
+					location.href="record.html"+location.search;	
+				}
+				
+			});
+		},
+		eggClick:function(){
+			var $modal = $('#your-modal');
+			var $hammer = $(".hammer");
+			var isFlag=$hammer.attr('datax');
+				$hammer.addClass('hammer-ani');
+				$("#egg1").fadeOut(),$("#egg2").fadeIn(1000), $("#egg3").fadeIn(1000, function(){
+					var ishaslottery=$hammer.data('ishaslottery');
+					if(ishaslottery==false){
+						App.popmodal('没有奖品了,您来晚了');
+					}else{
+						App.getwinningPic();
+					}
+				});
+		},
+		initEgg:function(){
+			var $hammer = $(".hammer");
+			$hammer.removeClass('hammer-ani');
+			$("#egg1").fadeIn(),$("#egg2").fadeOut(), $("#egg3").fadeOut();
+		},
+		
+		popmodal:function(tmpstr,reloadFlag){
+			var $remodal = $('#my-confirm');
+			$remodal.find('.am-modal-bd').html(tmpstr);			
+			$('#my-confirm').modal({
+				relatedTarget: this,
+		        onConfirm: function() {
+		        	if(reloadFlag=='1'){
+		        		location.reload();
+		        	}
+		        },
+			});
+		},
+		getData: function() {
+			var tmpObj=wqf_template.GetUrlParms();
+			var newObj={
+				"uid": tmpObj.uid,
+				"actionId":tmpObj.actionId,
+			};
+			var dataURL="/Radio/act_lottery/signjudge?";
+			$.get(dataURL, newObj, function(result, states, xhr) {
+				if (result) {
+					var mainHtml = template('template/xinxi', result);
+					$("#showMsg").html(mainHtml);
+					$('.hammer').data('issign',result.issign);//issign是否有资格参加活动（true有资格，false没有资格参加）
+					$('.hammer').data('ishaslottery',result.ishaslottery);//ishaslottery没有奖品了ishaslottery
+					$('.hammer').data('todaysign',result.todaysign);
+					$(".hammer").data('dataMsg',result);
+					if((result.ishaslottery == false)||(result.todaysign==false)||(result.issign==false)){
+						$("#surplus").html('0');
+					}
+					setInterval(function(){
+						autoScroll(".apple")
+					},2000);
+				} else {
+					App.popmodal("请求失败,请刷新重试!");
+				}
+			})
+			.fail(function() {
+				App.popmodal("请求失败！");
+			});
+		},
+		getwinningPic:function(){
+			var tmpURL="/Radio/act_lottery/AwardServlet?";
+			var tmpObj=wqf_template.GetUrlParms();
+			var newObj={
+				"uid": tmpObj.uid,
+				"actionId":tmpObj.actionId,
+			};
+			$.get(tmpURL, newObj, function(result, states, xhr) {
+				$("#testshow").find("img").attr('src',result.prizeimage);
+				$('.top-jihui').children('div').children('span').html(result.Surplusnumber);
+				$('.hammer').data('iswinning',result.iswinning);
+				$('.hammer').data('winningflag',result.winningflag);
+				if(result.prizeimage==null){
+					App.popmodal(result.msg);
+				}else{
+					$('#prizeImg').attr('src',result.prizeimage);
+					$("#your-modal").modal({closeViaDimmer: 0});
+				}
+				App.initEgg();
+			});
+		},
+		
+		// initialize iosbridge
+        initIOSBridge : function(){
+            function connectWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) {
+                    callback(WebViewJavascriptBridge)
+                }else {
+                    document.addEventListener('WebViewJavascriptBridgeReady', function() {
+                        callback(WebViewJavascriptBridge)
+                    }, false)
+                }
+            }
+            
+            if(window.iOSBridge) return;
+
+            connectWebViewJavascriptBridge(function(iOSBridge) {
+                iOSBridge.init(function(message, responseCallback) {
+                    responseCallback("");
+                })
+                window.iOSBridge=iOSBridge;
+            })
+        },
+        
+      nativeLogin : function(cb){
+        	if(typeof appJs=="object"){
+                appJs.login();
+            }else if(window.iOSBridge){
+                iOSBridge.callHandler("appJsLogin","");
+            }
+	        window.loginSuccess = function(uid){
+	            var param = uid,
+                address = location.href;
+	            if(typeof param !== (undefined || "")){
+	                param = 'uid=' + param.toString();
+	                address = address.replace(/uid=/, param);
+	                location.href = address;
+	                
+	            }
+	        };
+    	},
+
+        // judge inner app
+        isInApp : function(){
+            var agent = navigator.userAgent,
+                iPhone = /iphone/i.test(agent),
+                weChat = /MicroMessenger/i.test(agent),
+                mobile = /mobile\//i.test(agent);
+            return (typeof appJs == "object") || window.iOSBridge || weChat; 
+        },
+
+        validateApp : function(){
+                this.popmodal("请下载交广领航");
+				$.getScript("http://radio.iwxlh.com/actions/static/js/dlt.js")
+        },
+	
+		init: function() {
+			this.initEvents();
+			this.getData();
+		}
+	};
+	
+	App.initIOSBridge();
+	setTimeout(function(){
+		App.init();
+	},200);
+
+	//----------跑马灯--------------//
+	function autoScroll(obj){
+		$(obj).find("ul").animate({  
+			marginTop : "-25px"  
+		},500,function(){  
+			$(this).css({marginTop : "0px"}).find("li:first").appendTo(this);  
+		})  
+	}  
+
+</script>
+</body>
+</html>

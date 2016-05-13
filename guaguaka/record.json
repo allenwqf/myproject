@@ -1,0 +1,39 @@
+﻿{
+	"code":200,
+ 	"actionId":20055,
+    "name": "lucky",
+    "description": "2",
+    "scripts": "每个人都有一个死角， 自己走不出来，别人也闯不进去。我把最深沉的秘密放在那里。你不懂我，我不怪你。每个人都有一道伤口， 或深或浅，盖上布，以为不存在。我把最殷红的鲜血涂在那里。你不懂我，我不怪你。",
+    "other": "郑州先生188***888获得3等奖",
+    "list": [
+            {
+                "id": "1",
+                "prizeimage": "500",
+                "prizename": "一等奖",
+                "t":"2016/3/22",
+                "image": "images/p_0.jpg"
+            },
+            {
+                "id": "2",
+                "prizeimage": "200",
+                "prizename": "二等奖",
+                "t":"2016/3/23",
+                "image": "images/p_1.jpg"
+            },
+            {
+                "id": "3",
+                "prizeimage": "100",
+                "prizename": "三等奖",
+                "t":"2016/3/24",
+                "image": "images/p_0.jpg"
+            },
+            {
+                "id": "4",
+                "prizeimage": "50",
+                "prizename": "四等奖",
+                "t":"2016/3/25",
+                "image": "images/p_1.jpg"
+            }
+            ],
+            "actioninfo": "<p><strong>活动奖品：</strong></p><p>【“奔跑吧，宝贝”冰雪运动会】入场券</p><p><strong>抽奖提示：</strong><br/></p><p>仅限【“奔跑吧，宝贝”冰雪运动会】报名用户参与抽奖；</p><p>每人每天限 3 次抽奖机会，中奖用户请保持手机畅通；<br/></p><p><span style=\"font-size: 14px;\">本次活动最终解释权归河南交通广播所有</span></p>"
+}

@@ -1,0 +1,130 @@
+	body{
+		max-width: 640px;
+		margin: 0 auto;
+		text-align: center;
+		background-color: #FF8D11;
+	}
+	img {
+	    display: block;
+	    max-width: 100%;
+	    height: auto;
+	}
+	
+	
+	#scratch{
+		position: absolute;
+		width: 65%;
+		height: 20%;
+		left: 17.5%;
+		top: 30%;
+	    background-repeat: no-repeat;
+		background-size: 100%,100%;
+		background-position: center;
+	}
+	#cover {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	
+	
+	.top-jilu{
+		position: absolute;
+		width: 8%;
+		height: 6%;
+		top: 20%;
+		right: 0px;
+		background-color: orange;
+		background-image: url(../images/zj.png);
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		/*border:5px dashed royalblue;*/
+	}
+	.top-jihui{
+		position: absolute;
+		width: 40%;
+		height: 70px;
+		top: 53%;
+		left: 30%;
+		color: #FFFF00;
+	}
+	.top-xinxi{
+		position: absolute;
+		width: 80%;
+		height: 30px;
+		left: 10%;
+		top: 60%;
+		color: #FFFF00;
+	}
+	
+	.top-guize{
+		width: 100%;
+		height: 30px;
+		left: 20%;
+		top: 90%;
+		/*text-align: center;
+		color: #000000;
+		font-size: medium; */
+	}
+	
+   .marquee-person {
+		background-color: #a60131;
+		border-radius: 25px;
+		color: #FFFFFF;
+	}
+	.prize {
+		position: absolute;
+		top: 15px;
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+		max-width: 80%;
+		height: 90%;
+		font-size: 12px;
+		color: #fff;
+		background: url(../images/prize-bg.png) center center no-repeat;
+		background-size: 100% 100%;
+		margin: 0 auto;
+	}
+	
+	.prize a {
+		position: absolute;
+		bottom: 30px;
+		left: 15%;
+		width: 70%;
+		height: 24px;
+		color: #f8f8f8;
+		margin: 0 auto;
+	}
+	
+	.prize img {
+		position: absolute;
+		top: 75px;
+		left: 15%;
+		width: 70%;
+		height: 45%;
+		margin: 0 auto;
+		z-index: 1000001;
+	}
+	
+	.am-modal-hd-person {
+		height: 300px;
+	}
+	
+	.scratch-ticket {
+	    position: absolute;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    text-align: center;
+	    margin: 0 auto;
+/*	    background: url(../images/zhongjiang.png);
+*/	    /*background-size: 246px 80px;*/
+	    background-size: 100% 100%;
+	}
+	#tipcontent{
+		font-size:xx-large;
+		padding-top: 10%;
+		display: none;
+	}
